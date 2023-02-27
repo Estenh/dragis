@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "crs": { "type": "name", "properties": { "name": "EPSG:25833" } },
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [270401.5784, 7041412.4792999998]
+      },
+      "properties": { "OBJECTID": 1 }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [270336.75850000046, 7041444.8892999999]
+      },
+      "properties": { "OBJECTID": 2 }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [270282.74189999979, 7041468.5214999989]
+      },
+      "properties": { "OBJECTID": 3 }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [1157043.8641999997, 9206608.0244999975],
+          [1157107.6237999983, 9206537.4144999981],
+          [1157223.9098000005, 9206487.045599997],
+          [1157249.4968999997, 9206653.4131999984]
+        ]
+      },
+      "properties": { "OBJECTID": 1, "Shape_Length": 390.18670623574349 }
+    }
+  ]
+}
