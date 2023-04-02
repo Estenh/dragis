@@ -1,0 +1,22 @@
+.sidebar {
+  background-color: rgba(0, 120, 0, 0.7);
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  justify-content: stretch;
+  position: absolute;
+  z-index: 10000;
+}
+.test {
+  color: brown;
+}
+.sidebar input {
+  position: absolute;
+  bottom: 10px;
+  margin-left: 10px;
+}
+.sidebar button {
+  position: absolute;
+  bottom: 20px;
+  margin-left: 10px;
+}
