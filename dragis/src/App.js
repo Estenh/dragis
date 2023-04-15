@@ -1,20 +1,28 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "./App.css";
 import LocationMarker from "./components/locationMarker.js";
-import DrawPolygon from "./components/drawPolygon.js";
-import BufferTestTurf from "./components/bufferTestTurf";
-import CentroidTestTurf from "./components/centroidTestTurf";
-import Sidebar from "./components/Sidebar";
+import SidebarTwo from "./components/SidebarTwo";
 import myData from "./data/lineTest.json";
+
+const polyStyle = { color: "red", weight: 2, fillOpacity: 0.3 };
+const layerColors = ["red", "greenwellow", "indigo"];
 
 function App() {
   const center = [63.4304856527785, 10.395052831328947];
-  const [layers, setLayers] = useState(myData);
-  console.log(layers.features);
+  const [layers, setLayers] = useState([]);
+
+  function updateLayers(layer) {
+    if (!layers.some((el) => el.layername === layer.layername)) {
+      setLayers([...layers, layer]);
+    }
+  }
+  useEffect(() => {
+    console.log(layers);
+  }, [layers]);
   return (
     <>
-      <Sidebar setLayers={setLayers} />
+      <SidebarTwo updateLayers={updateLayers} />
       <MapContainer
         center={center}
         zoom={14}
@@ -26,8 +34,13 @@ function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <LocationMarker />
-        <DrawPolygon layers={layers} />
-        <BufferTestTurf />
+        {layers.map((layer) => (
+          <GeoJSON
+            style={polyStyle}
+            key={layer.layername}
+            data={layer.features}
+          />
+        ))}
         <Marker position={center}>
           <Popup>
             Dette er midten av Trondheim. <br /> Norges fineste by!
