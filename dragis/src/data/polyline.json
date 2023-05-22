@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 3,
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [10.3937, 63.4331],
+          [10.3974, 63.4326]
+        ]
+      },
+      "properties": { "OBJECTID": 3, "Shape_Length": 156.66119586202774 }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "leaflet": "^1.9.3"
+  "devDependencies": {
+    "react-render-counter": "^1.0.1"
   }
 }

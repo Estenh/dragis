@@ -1,0 +1,38 @@
+.sidebar {
+  /* background-color: rgba(0, 120, 0, 0.7); */
+  background-color: #e3dac9;
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  justify-content: stretch;
+  position: absolute;
+  z-index: 2000;
+}
+.test {
+  color: brown;
+}
+.sidebar label {
+  position: absolute;
+  bottom: 10px;
+  margin: 50px;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  background-color: #9b6808;
+  cursor: pointer;
+}
+.sidebar button {
+  position: absolute;
+  bottom: 20px;
+  margin-left: 10px;
+}
+.layerList {
+  position: absolute;
+  top: 100px;
+  margin-left: 10px;
+}
+.sidebar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
