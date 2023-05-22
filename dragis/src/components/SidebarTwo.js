@@ -1,71 +1,30 @@
 import React from "react";
-import { useState, useRef, useEffect } from "react";
 import "./Sidebar.css";
+import LayerList from "./LayerList";
 
-const LOCAL_STORAGE_KEY = "GISLayers";
-
-function SidebarTwo({ updateLayers }) {
-  // const inputFile = useRef();
-  // if (inputFile.current) {
-  //   let file = inputFile.current.files[0];
-  //   let fileReader = new FileReader();
-  //   fileReader.readAsText(file);
-  //   fileReader.onload = (event) => {
-  //     let jsLayer = JSON.parse(fileReader.result);
-  //     console.log(jsLayer);
-  //     setLayers((prevLayers) => {
-  //       return [...prevLayers, jsLayer];
-  //     });
-  //   };
-  //   inputFile.current.value = null;
-  // }
-  // comment test222
-  //   const input = document.querySelector('input[type="file"]');
-  //   if (input) {
-  //     input.addEventListener("input", function (e) {
-  //       let file = input.files[0];
-  //       let fileReader = new FileReader();
-  //       fileReader.readAsText(file);
-  //       fileReader.onload = function () {
-  //         let json_layer = JSON.parse(fileReader.result);
-  //         json_layer.layername = file.name;
-  //         // if (!layers.some((el) => el.layername === json_layer.layername)) {
-  //         updateLayers(json_layer);
-  //         input.value = "";
-  //         // }
-  //       };
-  //     });
-  //   }
+function SidebarTwo({ addLayers, layers, toggleVisibility }) {
   let handleLayerAdd = (e) => {
     let layerFile = e.target.files[0];
     let reader = new FileReader();
     reader.readAsText(layerFile);
     reader.onload = function (e) {
       let jsonLayer = JSON.parse(reader.result);
-      jsonLayer.layername = layerFile.name;
-      updateLayers(jsonLayer);
+      jsonLayer.layername = layerFile.name.slice(0, -5);
+      addLayers(jsonLayer);
     };
   };
   return (
     <div className="sidebar">
-      <ul>
-        <li>En</li>
-        <li>To</li>
-        <li>Tre</li>
-        <li>Fire</li>
-        <li>Fem</li>
-        <li>Seks</li>
-        <li>Sju</li>
-        <li>Sjus</li>
-      </ul>
+      <LayerList layers={layers} toggleVisibility={toggleVisibility} />
       <input
         type="file"
         id="layerFile"
         placeholder="your"
         onChange={handleLayerAdd}
         value=""
+        hidden
       />
-      <p className="test">hei</p>
+      <label htmlFor="layerFile">Add data</label>
     </div>
   );
 }
