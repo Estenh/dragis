@@ -3,8 +3,9 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "./App.css";
 import LocationMarker from "./components/locationMarker.js";
 import SidebarTwo from "./components/SidebarTwo";
-import Toolbar from "./components/Toolbar";
+import Contentbar from "./components/Contentbar";
 import myData from "./data/lineTest.json";
+import MuiToolbar from "./components/MuiToolbar";
 
 const polyStyle = { color: "red", weight: 2, fillOpacity: 0.5 };
 const colors = ["green", "blue", "red"];
@@ -24,6 +25,12 @@ function App() {
     }
   }
 
+  function reorderLayers(layers) {
+    setLayers(layers);
+    let newArray = layers.filter((layer) => layer.visible);
+    setActiveLayers([...newArray]);
+  }
+
   function toggleVisibility(layerName) {
     const newLayers = [...layers];
     const layer = newLayers.find((layer) => layer.layername === layerName);
@@ -32,7 +39,7 @@ function App() {
     setActiveLayers(visibleLayers);
   }
 
-  function selectStyle(layer, color = null, weight = 2, fillOpacity = 0.5) {
+  function selectStyle(layer, color = null, weight = 2, fillOpacity = 1) {
     const randomIndex = Math.floor(Math.random() * layerColors.length);
     if (!color) {
       layer.style = {
@@ -53,6 +60,16 @@ function App() {
     }
   }
 
+  function drawNewLayers() {
+    const newLayers = [...layers];
+    const visibleLayers = newLayers.filter((layer) => layer.visible);
+    setActiveLayers(visibleLayers);
+  }
+
+  function setTop(feat) {
+    console.log(feat);
+  }
+
   useEffect(() => {
     console.log(layers);
   }, [layers]);
@@ -66,12 +83,13 @@ function App() {
   }, [activeLayers]);
   return (
     <>
-      <SidebarTwo
-        addLayers={addLayers}
+      <Contentbar
         layers={layers}
+        addLayers={addLayers}
+        reorderLayers={reorderLayers}
         toggleVisibility={toggleVisibility}
       />
-      <Toolbar layers={layers} addLayers={addLayers} />
+      <MuiToolbar layers={layers} addLayers={addLayers} />
       <MapContainer
         center={center}
         zoom={14}
@@ -90,6 +108,7 @@ function App() {
             style={layer.style}
             key={layer.layername}
             data={layer.features}
+            onEachFeature={setTop}
           />
         ))}
         <Marker position={[38.5656, -0.0653]}>
