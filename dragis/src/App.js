@@ -6,6 +6,8 @@ import SidebarTwo from "./components/SidebarTwo";
 import Contentbar from "./components/Contentbar";
 import myData from "./data/lineTest.json";
 import MuiToolbar from "./components/MuiToolbar";
+import AttributeTable from "./components/AttributeTable";
+import { circleMarker } from "leaflet";
 
 const polyStyle = { color: "red", weight: 2, fillOpacity: 0.5 };
 const colors = ["green", "blue", "red"];
@@ -39,7 +41,7 @@ function App() {
     setActiveLayers(visibleLayers);
   }
 
-  function selectStyle(layer, color = null, weight = 2, fillOpacity = 1) {
+  function selectStyle(layer, color = null, weight = 2, fillOpacity = 0.5) {
     const randomIndex = Math.floor(Math.random() * layerColors.length);
     if (!color) {
       layer.style = {
@@ -56,6 +58,7 @@ function App() {
         color: color,
         weight: weight,
         fillOpacity: fillOpacity,
+        radius: 18,
       };
     }
   }
@@ -64,10 +67,6 @@ function App() {
     const newLayers = [...layers];
     const visibleLayers = newLayers.filter((layer) => layer.visible);
     setActiveLayers(visibleLayers);
-  }
-
-  function setTop(feat) {
-    console.log(feat);
   }
 
   useEffect(() => {
@@ -83,13 +82,14 @@ function App() {
   }, [activeLayers]);
   return (
     <>
-      <Contentbar
+      {/* <Contentbar
         layers={layers}
         addLayers={addLayers}
         reorderLayers={reorderLayers}
         toggleVisibility={toggleVisibility}
-      />
-      <MuiToolbar layers={layers} addLayers={addLayers} />
+      /> */}
+      {/* <MuiToolbar layers={layers} addLayers={addLayers} /> */}
+      <AttributeTable layers={layers} />
       <MapContainer
         center={center}
         zoom={14}
@@ -108,7 +108,9 @@ function App() {
             style={layer.style}
             key={layer.layername}
             data={layer.features}
-            onEachFeature={setTop}
+            pointToLayer={function (feature, latlng) {
+              return circleMarker(latlng, { radius: 5 });
+            }}
           />
         ))}
         <Marker position={[38.5656, -0.0653]}>

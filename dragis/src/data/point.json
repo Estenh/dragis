@@ -8,7 +8,7 @@
         "type": "Point",
         "coordinates": [10.3876, 63.4314]
       },
-      "properties": { "OBJECTID": 1 }
+      "properties": { "OBJECTID": 1, "name": "per" }
     },
     {
       "type": "Feature",
@@ -17,7 +17,7 @@
         "type": "Point",
         "coordinates": [10.3899, 63.4318]
       },
-      "properties": { "OBJECTID": 2 }
+      "properties": { "OBJECTID": 2, "name": "pål" }
     },
     {
       "type": "Feature",
@@ -26,7 +26,7 @@
         "type": "Point",
         "coordinates": [10.3903, 63.4307]
       },
-      "properties": { "OBJECTID": 3 }
+      "properties": { "OBJECTID": 3, "name": "espen" }
     }
   ]
 }
