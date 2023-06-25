@@ -31,13 +31,12 @@ function Intersect({ layers, tool, addLayers }) {
     const layerFileSecond = layers.filter(
       (layer) => layer.layername === secondInput
     )[0];
-    console.log(layerFileFirst.features[0].geometry);
-    console.log(layerFileSecond);
     const intersection = intersect(
       layerFileFirst.features[0].geometry,
       layerFileSecond.features[0].geometry
     );
     const intersectionFeature = featureCollection([intersection]);
+    intersectionFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
     intersectionFeature.layername = output;
     addLayers(intersectionFeature);
   };

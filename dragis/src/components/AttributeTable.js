@@ -1,45 +1,62 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
 import data from "../data/point.json";
 
-const columns = [{ field: "id" }, { field: "test" }];
-const rows = [
-  { id: 1, test: "Yo", tester: 1 },
-  { id: 2, test: "Dawgf" },
-];
+function AttributeTable({ layers, selectedLayer, openAttributeTable }) {
+  const layer = layers.find((layer) => layer.layername === selectedLayer);
+  const colHeaders = Object.keys(layer.features[0].properties);
+  var columns = colHeaders.map((field) => {
+    console.log(field);
+    return {
+      field: field,
+    };
+  });
+  columns.unshift({ field: "id" });
 
-const dataCol = Object.keys(data.features[0].properties);
-var newColumns = dataCol.map((field) => {
-  return {
-    field: field,
-  };
-});
-const newRows = data.features.map((feature) => {
-  let newRow = feature.properties;
-  newRow.id = feature.id;
-  return newRow;
-});
-console.log(newColumns);
-console.log(newRows);
-
-function AttributeTable({ layers }) {
+  const rows = layer.features.map((feature) => {
+    const row = { ...feature.properties };
+    row.id = feature.id;
+    return row;
+  });
+  console.log(columns);
+  console.log(rows);
   return (
-    <Box sx={{ height: 200, width: "100%", zIndex: "tooltip" }}>
-      <DataGrid
-        rows={newRows}
-        columns={newColumns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+    <Box
+      sx={{
+        height: 200,
+        width: "100%",
+        position: "fixed",
+        zIndex: "modal",
+        bottom: 0,
+        top: "auto",
+      }}
+    >
+      <AppBar position="fixed" color="inherit" sx={{ top: "auto", bottom: 0 }}>
+        <Toolbar>
+          <IconButton edge="end" onClick={openAttributeTable}>
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-      />
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection
+          disableRowSelectionOnClick
+        />
+      </AppBar>
     </Box>
   );
 }

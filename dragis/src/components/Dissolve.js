@@ -22,9 +22,9 @@ function Dissolve({ layers, tool, addLayers }) {
   const runTool = () => {
     const layerFile = layers.filter((layer) => layer.layername === input)[0];
     const dissolved = dissolve(layerFile);
-    const dissolvedFeature = featureCollection([dissolved]);
-    dissolvedFeature.layername = output;
-    addLayers(dissolvedFeature);
+    dissolved.features.forEach((feat, idx) => (feat.id = idx + 1));
+    dissolved.layername = output;
+    addLayers(dissolved);
   };
 
   return (

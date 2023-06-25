@@ -41,6 +41,7 @@ function Union({ layers, tool, addLayers }) {
       dissolveLayerFileSecond.features[0].geometry
     );
     const uniFeature = featureCollection([uni]);
+    uniFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
     uniFeature.layername = output;
     addLayers(uniFeature);
   };

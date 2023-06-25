@@ -27,6 +27,7 @@ function Buffer({ layers, tool, addLayers }) {
     const layerFile = layers.filter((layer) => layer.layername === input)[0];
     const radiusMeters = radius / 1000;
     const buff = buffer(layerFile, radiusMeters);
+    buff.features.forEach((feat, idx) => (feat.id = idx + 1));
     buff.layername = output;
     addLayers(buff);
   };

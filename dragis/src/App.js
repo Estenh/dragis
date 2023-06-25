@@ -10,27 +10,28 @@ import AttributeTable from "./components/AttributeTable";
 import { circleMarker } from "leaflet";
 
 const polyStyle = { color: "red", weight: 2, fillOpacity: 0.5 };
-const colors = ["green", "blue", "red"];
+const colors = ["#14ad09", "#090cad", "#d91616"];
 
 function App() {
   const center = [63.4304856527785, 10.395052831328947];
   const [layers, setLayers] = useState([]);
   const [activeLayers, setActiveLayers] = useState([]);
   const [layerColors, setLayerColors] = useState(colors);
+  const [attributeTable, setAttributeTable] = useState(false);
+  const [selectedLayer, setSelectedLayer] = useState(false);
 
   function addLayers(layer) {
     if (!layers.some((el) => el.layername === layer.layername)) {
       layer.visible = true;
       selectStyle(layer);
       setLayers([...layers, layer]);
-      setActiveLayers([...activeLayers, layer]);
+      // setActiveLayers([...activeLayers, layer]);
     }
   }
 
   function reorderLayers(layers) {
+    setActiveLayers([]);
     setLayers(layers);
-    let newArray = layers.filter((layer) => layer.visible);
-    setActiveLayers([...newArray]);
   }
 
   function toggleVisibility(layerName) {
@@ -41,7 +42,13 @@ function App() {
     setActiveLayers(visibleLayers);
   }
 
-  function selectStyle(layer, color = null, weight = 2, fillOpacity = 0.5) {
+  function updateActiveLayers() {
+    const newLayers = [...layers];
+    const visibleLayers = newLayers.filter((layer) => layer.visible);
+    setActiveLayers(visibleLayers);
+  }
+
+  function selectStyle(layer, color = null, weight = 2, fillOpacity = 1) {
     const randomIndex = Math.floor(Math.random() * layerColors.length);
     if (!color) {
       layer.style = {
@@ -58,9 +65,27 @@ function App() {
         color: color,
         weight: weight,
         fillOpacity: fillOpacity,
-        radius: 18,
       };
+      setLayers([...layers]);
     }
+  }
+
+  function selectLayer(layername) {
+    setSelectedLayer(layername);
+  }
+
+  function deleteLayer(deleteLayername) {
+    if (deleteLayername === selectedLayer) {
+      setSelectedLayer(null);
+    }
+    setLayers((current) => {
+      return current.filter((layer) => layer.layername !== deleteLayername);
+    });
+  }
+
+  function openAttributeTable(layername) {
+    const newState = !attributeTable;
+    setAttributeTable(newState);
   }
 
   function drawNewLayers() {
@@ -69,8 +94,13 @@ function App() {
     setActiveLayers(visibleLayers);
   }
 
+  function showSelected(e) {
+    console.log(e);
+  }
+
   useEffect(() => {
     console.log(layers);
+    updateActiveLayers();
   }, [layers]);
   useEffect(() => {
     if (layerColors.length === 0) {
@@ -82,14 +112,25 @@ function App() {
   }, [activeLayers]);
   return (
     <>
-      {/* <Contentbar
+      <Contentbar
         layers={layers}
         addLayers={addLayers}
         reorderLayers={reorderLayers}
         toggleVisibility={toggleVisibility}
-      /> */}
-      {/* <MuiToolbar layers={layers} addLayers={addLayers} /> */}
-      <AttributeTable layers={layers} />
+        openAttributeTable={openAttributeTable}
+        selectLayer={selectLayer}
+        selectedLayer={selectedLayer}
+        selectStyle={selectStyle}
+        deleteLayer={deleteLayer}
+      />
+      <MuiToolbar layers={layers} addLayers={addLayers} />
+      {attributeTable && selectedLayer && (
+        <AttributeTable
+          layers={layers}
+          selectedLayer={selectedLayer}
+          openAttributeTable={openAttributeTable}
+        />
+      )}
       <MapContainer
         center={center}
         zoom={14}
@@ -102,8 +143,8 @@ function App() {
           // url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
           // attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
-        <LocationMarker />
-        {activeLayers.map((layer) => (
+        {/* <LocationMarker /> */}
+        {activeLayers.toReversed().map((layer) => (
           <GeoJSON
             style={layer.style}
             key={layer.layername}

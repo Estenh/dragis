@@ -25,6 +25,7 @@ function Bbox({ layers, tool, addLayers }) {
     const boundingBox = bbox(layerFile);
     const boundingBoxPoly = bboxPolygon(boundingBox);
     const bboxFeature = featureCollection([boundingBoxPoly]);
+    bboxFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
     bboxFeature.layername = output;
     addLayers(bboxFeature);
   };

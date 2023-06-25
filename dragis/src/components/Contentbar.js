@@ -2,7 +2,9 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
+import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -13,18 +15,46 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
+import AddIcon from "@mui/icons-material/Add";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import LayerList from "./LayerList";
+import DeleteDialog from "./DeleteDialog";
+import ColorDialog from "./ColorDialog";
 
 const drawerWidth = 240;
 
 function Contentbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [colorDialogOpen, setColorDialogOpen] = React.useState(false);
+  const [style, setStyle] = React.useState(null);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleOpenAttributeTable = () => {
+    props.openAttributeTable();
+  };
+
+  function handleOpenCloseDeleteDialog() {
+    setDeleteDialogOpen(!deleteDialogOpen);
+  }
+  function handleOpenCloseColorDialog() {
+    setColorDialogOpen(!colorDialogOpen);
+  }
+
+  const handleDeleteLayer = () => {
+    props.deleteLayer(props.selectedLayer);
+  };
+  const handleSelectStyle = (layer, color, weight, fillOpacity) => {
+    props.selectStyle(layer, color, weight, fillOpacity);
   };
 
   const handleLayerAdd = (e) => {
@@ -67,10 +97,10 @@ function Contentbar(props) {
         ))}
       </List>
       <Divider />
-      <IconButton component="label" variant="outlined">
-        <MailIcon />
+      <Button component="label" variant="outlined" endIcon={<AddIcon />}>
+        Add data
         <input type="file" hidden onChange={handleLayerAdd} value="" />
-      </IconButton>
+      </Button>
     </div>
   );
 
@@ -124,7 +154,16 @@ function Contentbar(props) {
             },
           }}
         >
-          <LayerList layers={props.layers} />
+          <Toolbar />
+          <Divider />
+          <LayerList
+            layers={props.layers}
+            reorderLayers={props.reorderLayers}
+            toggleVisibility={props.toggleVisibility}
+            selectLayer={props.selectLayer}
+            selectedLayer={props.selectedLayer}
+            selectStyle={props.selectStyle}
+          />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -138,15 +177,58 @@ function Contentbar(props) {
           open
         >
           {/* {drawer} */}
+          <Toolbar>
+            <Stack direction="row" spacing={1} sx={{ ml: -2 }}>
+              <Typography variant="h6">Contents</Typography>
+              <Tooltip title="Open attribute table">
+                <IconButton size="small" onClick={handleOpenAttributeTable}>
+                  <TableRowsIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete item">
+                <IconButton size="small" onClick={handleOpenCloseDeleteDialog}>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </Tooltip>
+              <DeleteDialog
+                deleteDialogOpen={deleteDialogOpen}
+                handleDeleteLayer={handleDeleteLayer}
+                handleOpenCloseDeleteDialog={handleOpenCloseDeleteDialog}
+              />
+              <Tooltip title="Change styling">
+                <IconButton size="small" onClick={handleOpenCloseColorDialog}>
+                  <ColorLensIcon />
+                </IconButton>
+              </Tooltip>
+              {props.selectedLayer && (
+                <ColorDialog
+                  colorDialogOpen={colorDialogOpen}
+                  handleOpenCloseColorDialog={handleOpenCloseColorDialog}
+                  handleSelectStyle={handleSelectStyle}
+                  selectedLayer={props.selectedLayer}
+                  layers={props.layers}
+                />
+              )}
+            </Stack>
+          </Toolbar>
+          <Divider />
           <LayerList
             layers={props.layers}
             reorderLayers={props.reorderLayers}
             toggleVisibility={props.toggleVisibility}
+            selectLayer={props.selectLayer}
+            selectedLayer={props.selectedLayer}
+            selectStyle={props.selectStyle}
           />
-          <IconButton component="label" variant="outlined">
-            <MailIcon />
+          <Button
+            component="label"
+            variant="contained"
+            endIcon={<AddIcon />}
+            sx={{ marginTop: "auto", marginBottom: 2 }}
+          >
+            Add data
             <input type="file" hidden onChange={handleLayerAdd} value="" />
-          </IconButton>
+          </Button>
         </Drawer>
       </Box>
     </Box>

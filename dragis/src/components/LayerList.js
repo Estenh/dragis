@@ -5,11 +5,20 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
 import Layer from "./Layer";
-import MailIcon from "@mui/icons-material/Mail";
+import TableRowsIcon from "@mui/icons-material/TableRows";
 
-function LayerList({ layers, toggleVisibility, reorderLayers }) {
+function LayerList({
+  layers,
+  toggleVisibility,
+  reorderLayers,
+  selectLayer,
+  selectedLayer,
+  selectStyle,
+}) {
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
@@ -20,8 +29,16 @@ function LayerList({ layers, toggleVisibility, reorderLayers }) {
     reorderLayers(items);
   }
 
+  function handleSelectedLayer(layername) {
+    selectLayer(layername);
+  }
+
   function handleVisibilityChange(layername) {
     toggleVisibility(layername);
+  }
+
+  function handleColorChange(event, layer) {
+    selectStyle(layer, event.target.value);
   }
 
   return (
@@ -34,7 +51,7 @@ function LayerList({ layers, toggleVisibility, reorderLayers }) {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              <List>
+              <List dense={true}>
                 {layers.map((layer, idx) => {
                   return (
                     <Draggable
@@ -48,7 +65,11 @@ function LayerList({ layers, toggleVisibility, reorderLayers }) {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListItemButton>
+                          <ListItemButton
+                            selected={selectedLayer === layer.layername}
+                            onClick={() => handleSelectedLayer(layer.layername)}
+                            sx={{ ml: -2 }}
+                          >
                             <ListItemIcon>
                               <Checkbox
                                 edge="start"
@@ -58,8 +79,29 @@ function LayerList({ layers, toggleVisibility, reorderLayers }) {
                                 }
                               />
                             </ListItemIcon>
-                            <ListItemText primary={layer.layername} />
+                            <ListItemText
+                              primary={layer.layername}
+                              sx={{ ml: -3, pl: 0 }}
+                            />
+                            <input
+                              type="color"
+                              value={layer.style.color}
+                              disabled={true}
+                              onChange={(e) => handleColorChange(e, layer)}
+                            />
                           </ListItemButton>
+                          {/* <ListItemButton>
+                            <ListItemIcon
+                              onClick={() =>
+                                handleSelectedLayer(layer.layername)
+                              }
+                            >
+                              <TableRowsIcon />
+                            </ListItemIcon>
+                            <ListItemIcon>
+                              <ColorLensIcon />
+                            </ListItemIcon>
+                          </ListItemButton> */}
                         </ListItem>
                       )}
                     </Draggable>

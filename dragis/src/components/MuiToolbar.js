@@ -21,6 +21,7 @@ import Intersect from "./Intersect";
 import Buffer from "./Buffer";
 import Union from "./Union";
 import Dissolve from "./Dissolve";
+import Area from "./Area";
 
 const drawerWidth = 240;
 
@@ -113,10 +114,11 @@ function MuiToolbar({ layers, addLayers }) {
               <ChevronRightIcon />
             )}
           </IconButton>
+          <Typography variant="h5">Tools</Typography>
         </DrawerHeader>
         <Divider />
         <List>
-          {["Bbox", "Buffer", "Dissolve", "Intersect", "Union"].map(
+          {["Area", "Bbox", "Buffer", "Dissolve", "Intersect", "Union"].map(
             (text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={() => handleToolSelect(text)}>
@@ -140,6 +142,8 @@ function MuiToolbar({ layers, addLayers }) {
           <Union layers={layers} tool={tool} addLayers={addLayers} />
         ) : tool === "Dissolve" ? (
           <Dissolve layers={layers} tool={tool} addLayers={addLayers} />
+        ) : tool === "Area" ? (
+          <Area layers={layers} tool={tool} />
         ) : null}
       </Drawer>
     </Box>
