@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "./App.css";
-import LocationMarker from "./components/locationMarker.js";
-import SidebarTwo from "./components/SidebarTwo";
 import Contentbar from "./components/Contentbar";
-import myData from "./data/lineTest.json";
 import MuiToolbar from "./components/MuiToolbar";
 import AttributeTable from "./components/AttributeTable";
 import { circleMarker } from "leaflet";
 
-const polyStyle = { color: "red", weight: 2, fillOpacity: 0.5 };
-const colors = ["#14ad09", "#090cad", "#d91616"];
+const colors = ["#14ad09", "#090cad", "#d91616", "#e6e916", "#db16e9"];
 
 function App() {
   const center = [63.4304856527785, 10.395052831328947];
@@ -24,6 +20,7 @@ function App() {
     if (!layers.some((el) => el.layername === layer.layername)) {
       layer.visible = true;
       selectStyle(layer);
+      setActiveLayers([]);
       setLayers([...layers, layer]);
       // setActiveLayers([...activeLayers, layer]);
     }
@@ -94,12 +91,7 @@ function App() {
     setActiveLayers(visibleLayers);
   }
 
-  function showSelected(e) {
-    console.log(e);
-  }
-
   useEffect(() => {
-    console.log(layers);
     updateActiveLayers();
   }, [layers]);
   useEffect(() => {
@@ -107,9 +99,6 @@ function App() {
       setLayerColors(colors);
     }
   }, [layerColors]);
-  useEffect(() => {
-    console.log(activeLayers);
-  }, [activeLayers]);
   return (
     <>
       <Contentbar

@@ -17,7 +17,6 @@ function Area({ layers, tool }) {
     const layerFile = layers.filter((layer) => layer.layername === input)[0];
     const calculatedArea = area(layerFile);
     setResult(calculatedArea);
-    console.log(calculatedArea);
   };
 
   return (

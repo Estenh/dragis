@@ -3,11 +3,25 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
+import Slider from "@mui/material/Slider";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { Typography } from "@mui/material";
+
+const marks = [
+  {
+    value: 0,
+    label: "0%",
+  },
+  {
+    value: 100,
+    label: "100%",
+  },
+];
 
 function ColorDialog({
   selectedLayer,
@@ -17,7 +31,6 @@ function ColorDialog({
   layers,
 }) {
   const layer = layers.filter((layer) => layer.layername === selectedLayer)[0];
-  console.log(layer);
   const [color, setColor] = useState(layer.style.color);
   const [weight, setWeight] = useState(layer.style.weight);
   const [fillOpacity, setFillOpacity] = useState(layer.style.fillOpacity);
@@ -37,7 +50,7 @@ function ColorDialog({
     setWeight(e.target.value);
   };
   const handleChangeFillOpacity = (e) => {
-    setFillOpacity(e.target.value);
+    setFillOpacity((100 - e.target.value) / 100);
   };
 
   useEffect(() => {
@@ -56,40 +69,56 @@ function ColorDialog({
   return (
     <div>
       <Dialog
+        maxWidth="sm"
+        fullWidth={true}
         open={colorDialogOpen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Please selct the desired styling"}
+          {"Please select the desired styling"}
         </DialogTitle>
         <DialogContent>
-          <Stack direction="row">
-            <Box marginTop={3}>
+          <Grid
+            container
+            direction="row"
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+            justifyContent="space-between"
+          >
+            <Grid item xs={2} marginLeft={0}>
+              <Typography>Color</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography>Line thickness</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography align="center">Transparency</Typography>
+            </Grid>
+            <Grid item xs={2} marginTop={1}>
               <input type="color" value={color} onChange={handleChangeColor} />
-            </Box>
-            <TextField
-              type="number"
-              variant="outlined"
-              label="Line thickness"
-              value={weight}
-              onChange={handleChangeWeight}
-              margin="dense"
-            />
-            <TextField
-              type="number"
-              variant="outlined"
-              label="Transparicy"
-              value={fillOpacity}
-              onChange={handleChangeFillOpacity}
-              margin="dense"
-            />
-            {/* <DialogContentText id="alert-dialog-description">
-              Let Google help apps determine location. This means sending
-              anonymous location data to Google, even when no apps are running.
-            </DialogContentText> */}
-          </Stack>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                type="number"
+                variant="outlined"
+                value={weight}
+                onChange={handleChangeWeight}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Slider
+                value={Math.round((1 - fillOpacity) * 100)}
+                valueLabelDisplay="auto"
+                aria-label="Always visible"
+                marks={marks}
+                onChange={handleChangeFillOpacity}
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

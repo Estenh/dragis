@@ -33,7 +33,6 @@ function Contentbar(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [colorDialogOpen, setColorDialogOpen] = React.useState(false);
-  const [style, setStyle] = React.useState(null);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -194,6 +193,7 @@ function Contentbar(props) {
                 deleteDialogOpen={deleteDialogOpen}
                 handleDeleteLayer={handleDeleteLayer}
                 handleOpenCloseDeleteDialog={handleOpenCloseDeleteDialog}
+                selectedLayer={props.selectedLayer}
               />
               <Tooltip title="Change styling">
                 <IconButton size="small" onClick={handleOpenCloseColorDialog}>

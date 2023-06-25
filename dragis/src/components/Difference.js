@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import difference from "@turf/difference";
 import dissolve from "@turf/dissolve";
 import { featureCollection } from "@turf/helpers";
 import SelectLayer from "./SelectLayer";
 
-function Dissolve({ layers, tool, addLayers }) {
+function Difference({ layers, tool, addLayers }) {
   const [input, setInput] = useState("");
+  const [secondInput, setSecondInput] = useState("");
   const [output, setOutput] = useState("");
 
   const handleChangeInput = (event) => {
     setInput(event.target.value);
+  };
+
+  const handleChangeSecondInput = (event) => {
+    setSecondInput(event.target.value);
   };
 
   const handleChangeOutput = (event) => {
@@ -19,11 +25,22 @@ function Dissolve({ layers, tool, addLayers }) {
   };
 
   const runTool = () => {
-    const layerFile = layers.filter((layer) => layer.layername === input)[0];
-    const dissolved = dissolve(layerFile);
-    dissolved.features.forEach((feat, idx) => (feat.id = idx + 1));
-    dissolved.layername = output;
-    addLayers(dissolved);
+    const layerFileFirst = layers.filter(
+      (layer) => layer.layername === input
+    )[0];
+    const layerFileSecond = layers.filter(
+      (layer) => layer.layername === secondInput
+    )[0];
+    const dissolveLayerFileFirst = dissolve(layerFileFirst);
+    const dissolveLayerFileSecond = dissolve(layerFileSecond);
+    const diff = difference(
+      dissolveLayerFileFirst.features[0].geometry,
+      dissolveLayerFileSecond.features[0].geometry
+    );
+    const diffFeature = featureCollection([diff]);
+    diffFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
+    diffFeature.layername = output;
+    addLayers(diffFeature);
   };
 
   return (
@@ -32,6 +49,13 @@ function Dissolve({ layers, tool, addLayers }) {
         layers={layers}
         input={input}
         handleChangeInput={handleChangeInput}
+        used={secondInput}
+      />
+      <SelectLayer
+        layers={layers}
+        input={secondInput}
+        handleChangeInput={handleChangeSecondInput}
+        used={input}
       />
       <Box sx={{ mt: 1, ml: 1, mb: 1 }}>
         <TextField
@@ -49,4 +73,4 @@ function Dissolve({ layers, tool, addLayers }) {
   );
 }
 
-export default Dissolve;
+export default Difference;

@@ -17,7 +17,6 @@ function Bbox({ layers, tool, addLayers }) {
 
   const handleChangeOutput = (event) => {
     setOutput(event.target.value);
-    console.log(event.target.value);
   };
 
   const runTool = () => {

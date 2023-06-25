@@ -11,7 +11,6 @@ function AttributeTable({ layers, selectedLayer, openAttributeTable }) {
   const layer = layers.find((layer) => layer.layername === selectedLayer);
   const colHeaders = Object.keys(layer.features[0].properties);
   var columns = colHeaders.map((field) => {
-    console.log(field);
     return {
       field: field,
     };
@@ -23,8 +22,7 @@ function AttributeTable({ layers, selectedLayer, openAttributeTable }) {
     row.id = feature.id;
     return row;
   });
-  console.log(columns);
-  console.log(rows);
+
   return (
     <Box
       sx={{

@@ -22,7 +22,6 @@ function Union({ layers, tool, addLayers }) {
 
   const handleChangeOutput = (event) => {
     setOutput(event.target.value);
-    console.log(event.target.value);
   };
 
   const runTool = () => {
@@ -34,8 +33,6 @@ function Union({ layers, tool, addLayers }) {
     )[0];
     const dissolveLayerFileFirst = dissolve(layerFileFirst);
     const dissolveLayerFileSecond = dissolve(layerFileSecond);
-    console.log(dissolveLayerFileFirst);
-    console.log(dissolveLayerFileSecond);
     const uni = union(
       dissolveLayerFileFirst.features[0].geometry,
       dissolveLayerFileSecond.features[0].geometry

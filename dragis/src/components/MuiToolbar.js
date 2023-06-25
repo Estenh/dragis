@@ -22,6 +22,7 @@ import Buffer from "./Buffer";
 import Union from "./Union";
 import Dissolve from "./Dissolve";
 import Area from "./Area";
+import Difference from "./Difference";
 
 const drawerWidth = 240;
 
@@ -81,7 +82,7 @@ function MuiToolbar({ layers, addLayers }) {
             sx={{ flexGrow: 1 }}
             component="div"
           >
-            YouGizz
+            DraGIS
           </Typography>
           <IconButton
             color="inherit"
@@ -118,15 +119,21 @@ function MuiToolbar({ layers, addLayers }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Area", "Bbox", "Buffer", "Dissolve", "Intersect", "Union"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => handleToolSelect(text)}>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            )
-          )}
+          {[
+            "Area",
+            "Bbox",
+            "Buffer",
+            "Difference",
+            "Dissolve",
+            "Intersect",
+            "Union",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton onClick={() => handleToolSelect(text)}>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
         <Divider />
         <Typography variant="h6" align="center" noWrap>
@@ -144,6 +151,8 @@ function MuiToolbar({ layers, addLayers }) {
           <Dissolve layers={layers} tool={tool} addLayers={addLayers} />
         ) : tool === "Area" ? (
           <Area layers={layers} tool={tool} />
+        ) : tool === "Difference" ? (
+          <Difference layers={layers} tool={tool} addLayers={addLayers} />
         ) : null}
       </Drawer>
     </Box>

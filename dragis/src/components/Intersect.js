@@ -21,7 +21,6 @@ function Intersect({ layers, tool, addLayers }) {
 
   const handleChangeOutput = (event) => {
     setOutput(event.target.value);
-    console.log(event.target.value);
   };
 
   const runTool = () => {
@@ -31,11 +30,17 @@ function Intersect({ layers, tool, addLayers }) {
     const layerFileSecond = layers.filter(
       (layer) => layer.layername === secondInput
     )[0];
-    const intersection = intersect(
-      layerFileFirst.features[0].geometry,
-      layerFileSecond.features[0].geometry
-    );
-    const intersectionFeature = featureCollection([intersection]);
+    const intersectList = [];
+    for (let i = 0; i < layerFileFirst.features.length; i++) {
+      for (let j = 0; j < layerFileSecond.features.length; j++) {
+        let intersection = intersect(
+          layerFileFirst.features[i].geometry,
+          layerFileSecond.features[j].geometry
+        );
+        intersection && intersectList.push(intersection);
+      }
+    }
+    const intersectionFeature = featureCollection(intersectList);
     intersectionFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
     intersectionFeature.layername = output;
     addLayers(intersectionFeature);

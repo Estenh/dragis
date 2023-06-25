@@ -10,6 +10,7 @@ function DeleteDialog({
   deleteDialogOpen,
   handleDeleteLayer,
   handleOpenCloseDeleteDialog,
+  selectedLayer,
 }) {
   const handleConfirm = () => {
     handleDeleteLayer();
@@ -24,17 +25,13 @@ function DeleteDialog({
         open={deleteDialogOpen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-describedby="layername"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {"Please confirm that you want to delete:"}
         </DialogTitle>
         <DialogContent>
-          <input type="color" />
-          {/* <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText> */}
+          <DialogContentText id="layername">{selectedLayer}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
