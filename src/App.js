@@ -6,7 +6,11 @@ import MuiToolbar from "./components/MuiToolbar";
 import AttributeTable from "./components/AttributeTable";
 import { circleMarker } from "leaflet";
 
-const colors = ["#14ad09", "#090cad", "#d91616", "#e6e916", "#db16e9"];
+/**
+ * The main component, all other components are children of App.js
+ */
+
+const colors = ["#14ad09", "#090cad", "#d91616", "#e6e916", "#db16e9"]; // colors that are assigned to new layer at random
 
 function App() {
   const center = [63.4304856527785, 10.395052831328947];

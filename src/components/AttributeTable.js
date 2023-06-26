@@ -7,6 +7,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
 import data from "../data/point.json";
 
+/**
+ * The attribute table that shows the features of a selected layer
+ */
+
 function AttributeTable({ layers, selectedLayer, openAttributeTable }) {
   const layer = layers.find((layer) => layer.layername === selectedLayer);
   const colHeaders = Object.keys(layer.features[0].properties);

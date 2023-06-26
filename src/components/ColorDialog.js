@@ -12,6 +12,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Typography } from "@mui/material";
 
+/**
+ * The dialog window where styling can be edited
+ */
+
 const marks = [
   {
     value: 0,

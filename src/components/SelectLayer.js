@@ -5,6 +5,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+/**
+ * An inputfield with a drop down menu for selecting
+ * layers to use in geoprocessing.
+ */
+
 function SelectLayer({
   layers,
   input,

@@ -24,6 +24,12 @@ import Dissolve from "./Dissolve";
 import Area from "./Area";
 import Difference from "./Difference";
 
+/**
+ * The sidebar where all det geo tools are located.
+ * The tools are rendered according to the the state
+ * passed down from it's parent.
+ */
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {

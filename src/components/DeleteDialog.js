@@ -6,6 +6,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+/**
+ * The dialog window where the user confirms deleting a layer
+ */
+
 function DeleteDialog({
   deleteDialogOpen,
   handleDeleteLayer,
