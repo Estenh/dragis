@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
-import data from "../data/point.json";
+// import data from "../data/point.json";
 
 /**
  * The attribute table that shows the features of a selected layer

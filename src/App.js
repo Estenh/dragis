@@ -5,6 +5,7 @@ import Contentbar from "./components/Contentbar";
 import MuiToolbar from "./components/MuiToolbar";
 import AttributeTable from "./components/AttributeTable";
 import { circleMarker } from "leaflet";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 /**
  * The main component, all other components are children of App.js
@@ -12,13 +13,30 @@ import { circleMarker } from "leaflet";
 
 const colors = ["#14ad09", "#090cad", "#d91616", "#e6e916", "#db16e9"]; // colors that are assigned to new layer at random
 
+
+const attributes = { // light and dark mode base map attributes
+  light: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  dark: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+}
+const urls = { // light and dark mode base map tiles
+  light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  dark: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+}
+
 function App() {
-  const center = [63.4304856527785, 10.395052831328947];
+  const center = [63.4304856527785, 10.395052831328947]; // yo
   const [layers, setLayers] = useState([]);
   const [activeLayers, setActiveLayers] = useState([]);
   const [layerColors, setLayerColors] = useState(colors);
   const [attributeTable, setAttributeTable] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState(false);
+  const [darkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light'
+    }
+  })
 
   function addLayers(layer) {
     if (!layers.some((el) => el.layername === layer.layername)) {
@@ -104,7 +122,7 @@ function App() {
     }
   }, [layerColors]);
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Contentbar
         layers={layers}
         addLayers={addLayers}
@@ -131,10 +149,8 @@ function App() {
         zoomControl={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          // url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-          // attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          url={darkMode ? urls.dark : urls.light}
+          attribution={darkMode ? attributes.dark : attributes.light}
         />
         {/* <LocationMarker /> */}
         {activeLayers.toReversed().map((layer) => (
@@ -147,11 +163,8 @@ function App() {
             }}
           />
         ))}
-        <Marker position={[38.5656, -0.0653]}>
-          <Popup>Her bor det en løk!</Popup>
-        </Marker>
       </MapContainer>
-    </>
+    </ThemeProvider>
   );
 }
 

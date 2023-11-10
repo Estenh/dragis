@@ -16,7 +16,7 @@ function Area({ layers, tool }) {
   const runTool = () => {
     const layerFile = layers.filter((layer) => layer.layername === input)[0];
     const calculatedArea = area(layerFile);
-    setResult(calculatedArea);
+    setResult(calculatedArea.toFixed(2));
   };
 
   return (
@@ -27,7 +27,7 @@ function Area({ layers, tool }) {
         handleChangeInput={handleChangeInput}
       />
       <Box sx={{ mt: 1, ml: 2, mb: 1 }}>
-        <Typography>Area: {result}</Typography>
+        <Typography>Area: {result} {result && 'meters'}</Typography>
       </Box>
       <Box sx={{ mt: 1, ml: 1, mb: 1 }}>
         <Button variant="contained" onClick={runTool}>
