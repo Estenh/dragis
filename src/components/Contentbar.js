@@ -19,6 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
@@ -29,14 +30,8 @@ import ColorDialog from "./ColorDialog";
 const drawerWidth = 240;
 
 function Contentbar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [colorDialogOpen, setColorDialogOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const handleOpenAttributeTable = () => {
     props.openAttributeTable();
@@ -67,134 +62,110 @@ function Contentbar(props) {
     };
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const drawer = (
+    <>
+      <Toolbar>
+        <Stack
+          direction="row"
+          spacing={props.mobileOpen ? 0 : 1}
+          sx={{ ml: -2 }}
+        >
+          <Typography variant="h6">Contents</Typography>
+          <Tooltip title="Open attribute table">
+            <IconButton size="small" onClick={handleOpenAttributeTable}>
+              <TableRowsIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete item">
+            <IconButton size="small" onClick={handleOpenCloseDeleteDialog}>
+              <DeleteForeverIcon />
+            </IconButton>
+          </Tooltip>
+          <DeleteDialog
+            deleteDialogOpen={deleteDialogOpen}
+            handleDeleteLayer={handleDeleteLayer}
+            handleOpenCloseDeleteDialog={handleOpenCloseDeleteDialog}
+            selectedLayer={props.selectedLayer}
+          />
+          <Tooltip title="Change styling">
+            <IconButton size="small" onClick={handleOpenCloseColorDialog}>
+              <ColorLensIcon />
+            </IconButton>
+          </Tooltip>
+          {props.mobileOpen && (
+            <IconButton onClick={props.handleDrawerToggle}>
+              <ChevronLeftIcon />
+            </IconButton>
+          )}
+          {props.selectedLayer && (
+            <ColorDialog
+              colorDialogOpen={colorDialogOpen}
+              handleOpenCloseColorDialog={handleOpenCloseColorDialog}
+              handleSelectStyle={handleSelectStyle}
+              selectedLayer={props.selectedLayer}
+              layers={props.layers}
+            />
+          )}
+        </Stack>
+      </Toolbar>
+      <Divider />
+      <LayerList
+        layers={props.layers}
+        reorderLayers={props.reorderLayers}
+        toggleVisibility={props.toggleVisibility}
+        selectLayer={props.selectLayer}
+        selectedLayer={props.selectedLayer}
+        selectStyle={props.selectStyle}
+      />
+      <Button
+        component="label"
+        variant="contained"
+        endIcon={<AddIcon />}
+        sx={{ marginTop: "auto", marginBottom: 2 }}
+      >
+        Add data
+        <input type="file" hidden onChange={handleLayerAdd} value="" />
+      </Button>
+    </>
+  );
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
+    <Box
+      component="nav"
+      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      aria-label="content sidebar"
+    >
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+      <Drawer
+        variant="temporary"
+        open={props.mobileOpen}
+        onClose={props.handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="content sidebar"
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
+        }}
+        open
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          <Toolbar />
-          <Divider />
-          <LayerList
-            layers={props.layers}
-            reorderLayers={props.reorderLayers}
-            toggleVisibility={props.toggleVisibility}
-            selectLayer={props.selectLayer}
-            selectedLayer={props.selectedLayer}
-            selectStyle={props.selectStyle}
-          />
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {/* {drawer} */}
-          <Toolbar>
-            <Stack direction="row" spacing={1} sx={{ ml: -2 }}>
-              <Typography variant="h6">Contents</Typography>
-              <Tooltip title="Open attribute table">
-                <IconButton size="small" onClick={handleOpenAttributeTable}>
-                  <TableRowsIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete item">
-                <IconButton size="small" onClick={handleOpenCloseDeleteDialog}>
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Tooltip>
-              <DeleteDialog
-                deleteDialogOpen={deleteDialogOpen}
-                handleDeleteLayer={handleDeleteLayer}
-                handleOpenCloseDeleteDialog={handleOpenCloseDeleteDialog}
-                selectedLayer={props.selectedLayer}
-              />
-              <Tooltip title="Change styling">
-                <IconButton size="small" onClick={handleOpenCloseColorDialog}>
-                  <ColorLensIcon />
-                </IconButton>
-              </Tooltip>
-              {props.selectedLayer && (
-                <ColorDialog
-                  colorDialogOpen={colorDialogOpen}
-                  handleOpenCloseColorDialog={handleOpenCloseColorDialog}
-                  handleSelectStyle={handleSelectStyle}
-                  selectedLayer={props.selectedLayer}
-                  layers={props.layers}
-                />
-              )}
-            </Stack>
-          </Toolbar>
-          <Divider />
-          <LayerList
-            layers={props.layers}
-            reorderLayers={props.reorderLayers}
-            toggleVisibility={props.toggleVisibility}
-            selectLayer={props.selectLayer}
-            selectedLayer={props.selectedLayer}
-            selectStyle={props.selectStyle}
-          />
-          <Button
-            component="label"
-            variant="contained"
-            endIcon={<AddIcon />}
-            sx={{ marginTop: "auto", marginBottom: 2 }}
-          >
-            Add data
-            <input type="file" hidden onChange={handleLayerAdd} value="" />
-          </Button>
-        </Drawer>
-      </Box>
+        {drawer}
+      </Drawer>
     </Box>
   );
 }

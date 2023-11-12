@@ -31,16 +31,23 @@ function Difference({ layers, tool, addLayers }) {
     const layerFileSecond = layers.filter(
       (layer) => layer.layername === secondInput
     )[0];
+    console.log(layerFileFirst);
+    console.log(layerFileSecond);
     const dissolveLayerFileFirst = dissolve(layerFileFirst);
     const dissolveLayerFileSecond = dissolve(layerFileSecond);
+    console.log(dissolveLayerFileFirst);
+    console.log(dissolveLayerFileSecond);
     const diff = difference(
       dissolveLayerFileFirst.features[0].geometry,
       dissolveLayerFileSecond.features[0].geometry
     );
     const diffFeature = featureCollection([diff]);
-    diffFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
-    diffFeature.layername = output;
-    addLayers(diffFeature);
+    console.log(diff);
+    if (diff) {
+      diffFeature.features.forEach((feat, idx) => (feat.id = idx + 1));
+      diffFeature.layername = output;
+      addLayers(diffFeature);
+    }
   };
 
   return (

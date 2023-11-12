@@ -32,23 +32,6 @@ import Difference from "./Difference";
 
 const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: drawerWidth,
-  }),
-}));
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -58,110 +41,77 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-function MuiToolbar({ layers, addLayers }) {
+function MuiToolbar({
+  layers,
+  addLayers,
+  handleDrawerClose,
+  handleToolSelect,
+  tool,
+  open,
+}) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [tool, setTool] = React.useState(null);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-    setTool(null);
-  };
-
-  const handleToolSelect = (tool) => {
-    setTool(tool);
-  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <Typography
-            variant="h4"
-            align="center"
-            noWrap
-            sx={{ flexGrow: 1 }}
-            component="div"
-          >
-            DraGIS
-          </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: "none" }) }}
-          >
-            <BuildIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
           width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-          },
-        }}
-        variant="persistent"
-        anchor="right"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-          <Typography variant="h5">Tools</Typography>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {[
-            "Area",
-            "Bbox",
-            "Buffer",
-            "Difference",
-            "Dissolve",
-            "Intersect",
-            "Union",
-          ].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => handleToolSelect(text)}>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <Typography variant="h6" align="center" noWrap>
-          {tool}
-        </Typography>
-        {tool === "Bbox" ? (
-          <Bbox layers={layers} tool={tool} addLayers={addLayers} />
-        ) : tool === "Intersect" ? (
-          <Intersect layers={layers} tool={tool} addLayers={addLayers} />
-        ) : tool === "Buffer" ? (
-          <Buffer layers={layers} tool={tool} addLayers={addLayers} />
-        ) : tool === "Union" ? (
-          <Union layers={layers} tool={tool} addLayers={addLayers} />
-        ) : tool === "Dissolve" ? (
-          <Dissolve layers={layers} tool={tool} addLayers={addLayers} />
-        ) : tool === "Area" ? (
-          <Area layers={layers} tool={tool} />
-        ) : tool === "Difference" ? (
-          <Difference layers={layers} tool={tool} addLayers={addLayers} />
-        ) : null}
-      </Drawer>
-    </Box>
+        },
+      }}
+      variant="persistent"
+      anchor="right"
+      open={open}
+    >
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === "rtl" ? (
+            <ChevronLeftIcon />
+          ) : (
+            <ChevronRightIcon />
+          )}
+        </IconButton>
+        <Typography variant="h5">Tools</Typography>
+      </DrawerHeader>
+      <Divider />
+      <List>
+        {[
+          "Area",
+          "Bbox",
+          "Buffer",
+          "Difference",
+          "Dissolve",
+          "Intersect",
+          "Union",
+        ].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton onClick={() => handleToolSelect(text)}>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <Typography variant="h6" align="center" noWrap>
+        {tool}
+      </Typography>
+      {tool === "Bbox" ? (
+        <Bbox layers={layers} tool={tool} addLayers={addLayers} />
+      ) : tool === "Intersect" ? (
+        <Intersect layers={layers} tool={tool} addLayers={addLayers} />
+      ) : tool === "Buffer" ? (
+        <Buffer layers={layers} tool={tool} addLayers={addLayers} />
+      ) : tool === "Union" ? (
+        <Union layers={layers} tool={tool} addLayers={addLayers} />
+      ) : tool === "Dissolve" ? (
+        <Dissolve layers={layers} tool={tool} addLayers={addLayers} />
+      ) : tool === "Area" ? (
+        <Area layers={layers} tool={tool} />
+      ) : tool === "Difference" ? (
+        <Difference layers={layers} tool={tool} addLayers={addLayers} />
+      ) : null}
+    </Drawer>
   );
 }
 

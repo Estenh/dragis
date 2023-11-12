@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "./App.css";
 import Contentbar from "./components/Contentbar";
-import MuiToolbar from "./components/MuiToolbar";
+import HeaderBar from "./components/HeaderBar";
 import AttributeTable from "./components/AttributeTable";
 import { circleMarker } from "leaflet";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
@@ -13,15 +13,17 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 const colors = ["#14ad09", "#090cad", "#d91616", "#e6e916", "#db16e9"]; // colors that are assigned to new layer at random
 
-
-const attributes = { // light and dark mode base map attributes
-  light: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  dark: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-}
-const urls = { // light and dark mode base map tiles
+const attributes = {
+  // light and dark mode base map attributes
+  light:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  dark: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+};
+const urls = {
+  // light and dark mode base map tiles
   light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  dark: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-}
+  dark: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+};
 
 function App() {
   const center = [63.4304856527785, 10.395052831328947]; // yo
@@ -30,13 +32,19 @@ function App() {
   const [layerColors, setLayerColors] = useState(colors);
   const [attributeTable, setAttributeTable] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState(false);
-  const [darkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [darkMode, setDarkMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light'
-    }
-  })
+      mode: darkMode ? "dark" : "light",
+    },
+  });
+
+  function toggleDarkMode() {
+    setDarkMode(!darkMode);
+  }
 
   function addLayers(layer) {
     if (!layers.some((el) => el.layername === layer.layername)) {
@@ -45,6 +53,7 @@ function App() {
       setActiveLayers([]);
       setLayers([...layers, layer]);
       // setActiveLayers([...activeLayers, layer]);
+      console.log(layers);
     }
   }
 
@@ -123,7 +132,7 @@ function App() {
   }, [layerColors]);
   return (
     <ThemeProvider theme={theme}>
-      <Contentbar
+      {/* <Contentbar
         layers={layers}
         addLayers={addLayers}
         reorderLayers={reorderLayers}
@@ -133,8 +142,20 @@ function App() {
         selectedLayer={selectedLayer}
         selectStyle={selectStyle}
         deleteLayer={deleteLayer}
+      /> */}
+      <HeaderBar
+        layers={layers}
+        addLayers={addLayers}
+        reorderLayers={reorderLayers}
+        toggleVisibility={toggleVisibility}
+        openAttributeTable={openAttributeTable}
+        selectLayer={selectLayer}
+        selectedLayer={selectedLayer}
+        selectStyle={selectStyle}
+        deleteLayer={deleteLayer}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
       />
-      <MuiToolbar layers={layers} addLayers={addLayers} />
       {attributeTable && selectedLayer && (
         <AttributeTable
           layers={layers}
