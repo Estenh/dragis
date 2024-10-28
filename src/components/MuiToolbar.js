@@ -15,6 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import { Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import Bbox from "./Bbox";
 import Intersect from "./Intersect";
@@ -51,6 +52,21 @@ function MuiToolbar({
 }) {
   const theme = useTheme();
 
+  const toolDescriptions = {
+    Area: "The Area tool calculates the surface area of a given geometry or shape.",
+    Bbox: "The Bbox tool generates a bounding box that completely surrounds the selected geometry.",
+    Buffer:
+      "The Buffer tool creates a buffer zone of a specified distance around a geometry.",
+    Difference:
+      "The Difference tool subtracts one geometry from another, leaving the difference.",
+    Dissolve:
+      "The Dissolve tool merges adjacent polygons into a single polygon.",
+    Intersect:
+      "The Intersect tool finds the common area where two geometries overlap.",
+    Union:
+      "The Union tool combines multiple geometries into one, keeping all the areas.",
+  };
+
   return (
     <Drawer
       sx={{
@@ -86,9 +102,18 @@ function MuiToolbar({
           "Union",
         ].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => handleToolSelect(text)}>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <Tooltip
+              title={
+                <Typography variant="body2" style={{ whiteSpace: "pre-line" }}>
+                  {toolDescriptions[text]}
+                </Typography>
+              }
+              placement="left"
+            >
+              <ListItemButton onClick={() => handleToolSelect(text)}>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </Tooltip>
           </ListItem>
         ))}
       </List>
