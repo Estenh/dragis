@@ -27,7 +27,14 @@ function Area({ layers, tool }) {
         handleChangeInput={handleChangeInput}
       />
       <Box sx={{ mt: 1, ml: 2, mb: 1 }}>
-        <Typography>Area: {result} {result && 'meters'}</Typography>
+        <Typography>
+          Area: {result}{" "}
+          {result && (
+            <>
+              m<sup>2</sup>
+            </>
+          )}
+        </Typography>
       </Box>
       <Box sx={{ mt: 1, ml: 1, mb: 1 }}>
         <Button variant="contained" onClick={runTool}>
