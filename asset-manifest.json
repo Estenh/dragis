@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dragis/static/css/main.caeb52c7.css",
-    "main.js": "/dragis/static/js/main.9fa507c2.js",
+    "main.js": "/dragis/static/js/main.dd16373a.js",
     "static/js/787.782581c2.chunk.js": "/dragis/static/js/787.782581c2.chunk.js",
     "index.html": "/dragis/index.html",
     "main.caeb52c7.css.map": "/dragis/static/css/main.caeb52c7.css.map",
-    "main.9fa507c2.js.map": "/dragis/static/js/main.9fa507c2.js.map",
+    "main.dd16373a.js.map": "/dragis/static/js/main.dd16373a.js.map",
     "787.782581c2.chunk.js.map": "/dragis/static/js/787.782581c2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.caeb52c7.css",
-    "static/js/main.9fa507c2.js"
+    "static/js/main.dd16373a.js"
   ]
 }
