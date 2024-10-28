@@ -66,8 +66,8 @@ function App() {
     const newLayers = [...layers];
     const layer = newLayers.find((layer) => layer.layername === layerName);
     layer.visible = !layer.visible;
-    const visibleLayers = newLayers.filter((layer) => layer.visible);
-    setActiveLayers(visibleLayers);
+    setActiveLayers([]);
+    setLayers(newLayers);
   }
 
   function updateActiveLayers() {
@@ -181,6 +181,15 @@ function App() {
             data={layer.features}
             pointToLayer={function (feature, latlng) {
               return circleMarker(latlng, { radius: 5 });
+            }}
+            onEachFeature={function (feature, row) {
+              if (feature.selected) {
+                row.setStyle({ color: "red", fillColor: layer.style.color });
+              }
+              row.on({
+                click: (e) =>
+                  row.setStyle({ color: "red", fillColor: layer.style.color }),
+              });
             }}
           />
         ))}

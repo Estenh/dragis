@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# DraGIS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This application was made as a project in TBA4251 - Programming in Geomatics.\
+The goal of the project was to make an easy to use GIS-app that would serve as a good starting point for poeple learning GIS.
 
-## Available Scripts
+## Content
 
-In the project directory, you can run:
+1. [How to use](#how-to-use)
+   1. [Data](#data)
+   2. [Symbology](#symbology)
+   3. [Tools](#tools)
+2. [Code](#code)
 
-### `npm start`
+## How to use
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `Data`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To use this app, you first have to import some geographical data via the "add data" button.\
+The file type accepted is geojson with a .json or .geojson extension. The crs needs to be WGS_1984.
 
-### `npm test`
+### `Symbology`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can alter the way your data is projected on the map by changing the symbology.\
+Simply select the desired layer you want to edit and click the color palette above the list of data layers.\
 
-### `npm run build`
+By checking or unchecking the box infront of the layer name, you can toggle the layers visibility on the map.\
+You can also reorder tha layers by dragging and dropping them. This will affect which layer is drawn on top.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `Tools`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Through the menu on the right you can access the geoprocessing tools.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The current available tools are:
 
-### `npm run eject`
+- Area
+- Bbox
+- Buffer
+- Differnece
+- Dissolve
+- Intersect
+- Union
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Code
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `React`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### `Leaflet`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### `Turf`
 
-## Learn More
+### `Material UI`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### `React beautiful DND`
